@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-import api, { getPosts } from '../../servic/api'
+import api from '../../services/api'
 
 import * as S from './styles'
 import Header from '../../componens/Header'
 import Post from '../../componens/Post'
+import { AxiosResponse } from 'axios'
 
 interface PostData {
   id: string
@@ -25,31 +26,29 @@ interface PostData {
   children_deep_count: number
 }
 
+const getPosts = async () => {
+  try {
+    const res: AxiosResponse<PostData[]> = await api.get('/contents?page=1&per_page=10&strategy=relevant')
+    if (res) {
+      return res.data
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.log("Erro ao buscar posts: ", error)
+  }
+}
+
 export default () => {
-  const [list, setList] = useState<any>([])
+  const [list, setList] = useState<PostData[]>([])
 
-  // const getPosts = async () => {
-  //   try {
-  //     const response: AxiosResponse<PostData[]> = await api.get(
-  //       '/contents?page=1&per_page=10&strategy=relevant',
-  //     )
-  //     setList(response.data)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // const renderList = () => {
-  //   const renderingList = list.map((item) => <Post />)
-  //   return renderingList
-  // }
-
-  // useEffect(() => {
-  //   getPosts()
-
-  // })
-
-  setList(getPosts())
+  useEffect(() => {
+    getPosts().then(data => {
+      if (data !== undefined) {
+        setList(data as PostData[])
+      } 
+    }) 
+  }, [list])
 
   return (
     <S.MainContainer>
