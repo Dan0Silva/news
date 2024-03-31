@@ -26,16 +26,12 @@ interface PostData {
   children_deep_count: number
 }
 
-const getPosts = async () => {
-  try {
-    const res: AxiosResponse<PostData[]> = await api.get('/contents?page=1&per_page=10&strategy=relevant')
-    if (res) {
-      return res.data
-    } else {
-      return []
-    }
-  } catch (error) {
-    console.log("Erro ao buscar posts: ", error)
+async function getPost() {
+  const res = await api.get("/contents?page=1&per_page=10&strategy=new")
+  if (res)  {
+    return res.data
+  } else {
+    return []
   }
 }
 
@@ -43,12 +39,10 @@ export default () => {
   const [list, setList] = useState<PostData[]>([])
 
   useEffect(() => {
-    getPosts().then(data => {
-      if (data !== undefined) {
-        setList(data as PostData[])
-      } 
-    }) 
-  }, [list])
+    getPost().then(setList)
+  }, [])
+
+  console.log(list[0])
 
   return (
     <S.MainContainer>
