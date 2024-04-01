@@ -15,7 +15,7 @@ export const MainContainer = styled.View`
 
 export const Title = styled.Text`
   font-size: 32px;
-  font-weight: 300;
+  font-weight: 600;
   color: white;
 `
 
