@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native-stack'
 
 import Home from '../screens/Home'
+import Post from '../screens/Post'
 
 const Stack = createNativeStackNavigator()
 
@@ -27,7 +28,7 @@ export default () => {
     <NavigationContainer>
       <Stack.Navigator {...navigatorProps}>
         <Stack.Screen name="home" component={Home} />
-        <Stack.Screen name="post" component={Home} />
+        <Stack.Screen name="post" component={Post} />
       </Stack.Navigator>
     </NavigationContainer>
   )

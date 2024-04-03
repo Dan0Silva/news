@@ -4,25 +4,26 @@ import api from '../../services/api'
 
 import { useNavigation } from '@react-navigation/native'
 import { StackTypes } from '../../routes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 import * as S from './styles'
-import { Button } from 'react-native'
 
 interface Props {
   post: PostData
 }
 
-async function goToPost(post: PostData) {
-  const navigator = useNavigation<StackTypes>()
-
-  // const res = await api.get(`/contents/${post.owner_username}/${post.slug}`)
-  // console.log(res.data)
-
-  navigator.navigate('post')
-}
+type StackProps = StackNavigationProp<any, 'post'>
 
 export default (props: Props) => {
   const { post } = props
+  const navigator = useNavigation<StackProps>()
+
+  async function goToPost(post: PostData) {
+    const res = await api.get(`/contents/${post.owner_username}/${post.slug}`)
+    console.log(res.data)
+
+    navigator.navigate('post', { postData: res.data })
+  }
 
   const timeFormatted = () => `${moment(post.published_at).fromNow()}`
 
